@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Pratica com knockout</title>
+  <link rel="stylesheet" href="bootstrap.min.css">
+</head>
+
+<body class="container">
+  <h1>Chute um número de 1 a 10</h1>
+  <button type="button" class="btn btn-success" data-bind="click: gerarNumero">Gerar número</button>
+  <div class="input-group mb-3 w-25 p-3">
+    <input type="text" class="form-control" placeholder="Chute" data-bind="value: numeroChute">
+  </div>
+
+  <button type="button" class="btn btn-primary" data-bind="click: chute">Chutar</button>
+
+  <div class="alert alert-primary" role="alert" data-bind="text: alerta"></div>
+
+
+  <script src="knockout.js"></script>
+  <script type="text/javascript">
+    function myViewModel() {
+      var self = this;
+      var numeroAleatorio;
+
+      self.alerta = ko.observable("Inicie o jogo");
+
+      self.gerarNumero = function () {
+        numeroAleatorio = Math.floor(Math.random() * 10 + 1);
+      };
+
+      self.numeroChute = ko.observable();
+
+      self.chute = function () {
+        if (numeroChute() == numeroAleatorio) {
+          alerta("Parabéns, vc acertou, o número era: " + numeroAleatorio);
+          numeroChute("");
+        } else if (numeroChute() > numeroAleatorio) {
+          alerta("Valor mais alto que o sorteado.")
+        } else if (numeroChute() < numeroAleatorio) {
+          alerta("Valor mais baixo que o sorteado.")
+        }
+      };
+
+    }
+    ko.applyBindings(myViewModel);
+  </script>
+</body>
+
+</html>
