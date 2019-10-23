@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Praticando</title>
+  <link rel="stylesheet" href="bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="container mx-auto" style="width: 500px;">
+  <div class="caixa">
+    <h3>Increment on click</h3>
+    <button type="button" class="btn btn-primary" data-bind="click: somarClicks" style="margin: 15px;">
+      Click <span class="badge badge-light" data-bind="text: numeroDeClick"></span>
+    </button>
+  </div>
+
+  <div class="caixa">
+    <h3>Insert an remove person on list</h3>
+    <button class="btn btn-primary" style="margin: 15px;" data-bind="click: addPessoa">Adicionar</button>
+    <ul data-bind="foreach: pessoas">
+      <li>
+        Pessoa número: <span data-bind="text: $index"> </span>
+        <span data-bind="text: nome"> </span>
+        <a href="#" data-bind="click: removePessoa">Remover</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="caixa">
+    <h3>Hidden an show</h3>
+    <button class="btn btn-primary" style="margin: 15px;" data-bind="click: mostraOcultaClick">Click</button>
+    <div class="alert alert-success" role="alert" data-bind="visible: alertaMostra">
+      Show
+    </div>
+  </div>
+
+  <div class="caixa">
+    <h3>Enable and disable</h3>
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input" id="customCheck1" data-bind="checked: habilitaCheck">
+      <label class="custom-control-label" for="customCheck1">Check</label>
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" id="exampleInputPassword1"
+        data-bind="value: habilitaTexto, enable: habilitaCheck">
+    </div>
+  </div>
+
+  <div class="caixa">
+    <h3>Write and delete text</h3>
+    <button class="btn btn-primary" style="margin: 15px;" data-bind="click: escreveTexto">Write</button>
+    <button class="btn btn-primary" style="margin: 15px;" data-bind="click: deleteTexto">Delete</button>
+    <div class="form-group">
+      <label for="exampleFormControlTextarea1">Example textarea</label>
+      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+        data-bind="value: areaDoTexto"></textarea>
+    </div>
+  </div>
+
+  <script src="knockout.js"></script>
+
+  <script>
+    function myViewModel() {
+      var self = this;
+
+      self.numeroDeClick = ko.observable(0);
+
+      self.somarClicks = function () {
+        var contagemClicks = self.numeroDeClick();
+        self.numeroDeClick(contagemClicks + 1);
+      }
+
+      self.pessoas = ko.observableArray([
+        { nome: 'Bert' },
+        { nome: 'Charles' }
+      ]);
+
+      self.addPessoa = function () {
+        self.pessoas.push({ nome: "Fulano" });
+      };
+      self.removePessoa = function () {
+        self.pessoas.remove(this);
+      };
+
+      self.alertaMostra = ko.observable(false);
+
+      self.mostraOcultaClick = function () {
+        if (!alertaMostra()) {
+          alertaMostra(true);
+        } else {
+          alertaMostra(false);
+        }
+      };
+
+      self.habilitaCheck = ko.observable(false),
+        habilitaTexto = ko.observable("");
+
+      self.areaDoTexto = ko.observable("");
+      self.escreveTexto = function () {
+        areaDoTexto("Knockout is a JavaScript library that helps you to create rich, responsive display and editor user interfaces with a clean underlying data model.");
+      };
+      self.deleteTexto = function () {
+        if (!areaDoTexto("")) {
+          areaDoTexto("");
+        }
+      }
+    }
+    ko.applyBindings(myViewModel);
+  </script>
+</body>
+
+</html>
